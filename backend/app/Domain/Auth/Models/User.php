@@ -43,12 +43,13 @@ class User extends Authenticatable
 		'email_verified_at' => 'datetime',
 	];
 
-	public function tokenValid()
+	/**
+	 * Get fullname attribute.
+	 *  
+	 * @return string
+	 */
+	public function getFullnameAttribute(): string
 	{
-		if (Carbon::parse($this->attributes['expires_at']) < Carbon::now()) {
-			return true;
-		}
-
-		return false;
+		return "$this->firstname $this->lastname";
 	}
 }
