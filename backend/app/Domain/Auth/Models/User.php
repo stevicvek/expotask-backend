@@ -2,13 +2,15 @@
 
 namespace App\Domain\Auth\Models;
 
+use Illuminate\Support\Carbon;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-	use HasFactory, Notifiable;
+	use HasApiTokens, HasFactory, Notifiable;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -40,4 +42,13 @@ class User extends Authenticatable
 	protected $casts = [
 		'email_verified_at' => 'datetime',
 	];
+
+	public function tokenValid()
+	{
+		if (Carbon::parse($this->attributes['expires_at']) < Carbon::now()) {
+			return true;
+		}
+
+		return false;
+	}
 }
