@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  nginx:
+    container_name: ${APP_NAME}_nginx
+    image: nginx:alpine
+    volumes:
+      - ./backend:/var/www
+      - ./config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - ${SERVER_PORT}:80
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - expotask
+
+  php:
+    container_name: ${APP_NAME}_php
+    build:
+      context: .
+      dockerfile: config/php/Dockerfile
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - 9000:9000
+    networks:
+      - expotask
+
+  mysql:
+    container_name: ${APP_NAME}_mysql
+    image: mysql:latest
+    restart: unless-stopped
+    tty: true
+    ports:
+      - ${MYSQL_PORT}:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD:
+    networks:
+      - expotask
+
+networks:
+  expotask:
