@@ -19,6 +19,7 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('team')
 	->as('team.')
+	->middleware('auth:api')
 	->group(function () {
 		Route::post('/', CreateTeamController::class)->name('create');
 	});

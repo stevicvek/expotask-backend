@@ -2,19 +2,25 @@
 
 namespace App\Domain\Team\Controllers;
 
-use Illuminate\Http\Response;
-use App\Domain\Team\Models\Team;
+use App\Domain\Team\Actions\CreateTeamAction;
 use App\Domain\Team\Requests\StoreTeamRequest;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Illuminate\Http\Response;
 
 class CreateTeamController
 {
-  public function __invoke(StoreTeamRequest $request)
+  /**
+   * Create team.
+   * 
+   * @param StoreTeamRequest $request
+   * @param CreateTeamAction $action
+   * @return JsonResponse
+   */
+  public function __invoke(StoreTeamRequest $request, CreateTeamAction $action): JsonResponse
   {
     $data = $request->validated();
 
-    $team = Team::create($data);
-
-    $team->members()->attach(auth()->user(), ['accepted' => 1]);
+    $team = $action->execute($data);
 
     return response()
       ->json($team, Response::HTTP_CREATED);

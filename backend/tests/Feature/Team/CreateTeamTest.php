@@ -15,7 +15,7 @@ class CreateTeamTest extends TestCase
   /** @test */
   public function it_can_create_team()
   {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = User::factory()->create(), 'api');
 
     $response = $this->postJson(route('team.create'), [
       'name' => $this->faker->name,
@@ -41,7 +41,7 @@ class CreateTeamTest extends TestCase
   /** @test */
   public function it_fails_when_name_or_color_fields_are_not_filled()
   {
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(User::factory()->create(), 'api');
 
     $response = $this->postJson(route('team.create'), []);
 
@@ -58,7 +58,7 @@ class CreateTeamTest extends TestCase
   /** @test */
   public function it_fails_when_color_field_is_incorrect_format()
   {
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(User::factory()->create(), 'api');
 
     $response = $this->postJson(route('team.create'), [
       'name' => $this->faker->name,
@@ -77,7 +77,7 @@ class CreateTeamTest extends TestCase
   /** @test */
   public function it_fails_when_name_field_is_not_long_enough()
   {
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(User::factory()->create(), 'api');
 
     $response = $this->postJson(route('team.create'), [
       'name' => 'asd',
