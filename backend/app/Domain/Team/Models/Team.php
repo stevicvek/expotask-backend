@@ -2,15 +2,16 @@
 
 namespace App\Domain\Team\Models;
 
+use Spatie\Sluggable\HasSlug;
 use App\Domain\Auth\Models\User;
-use App\Domain\Team\Models\TeamMembers;
+use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Team extends Model
 {
-	use HasFactory;
+	use HasSlug, HasFactory;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -30,5 +31,17 @@ class Team extends Model
 	public function members(): BelongsToMany
 	{
 		return $this->belongsToMany(User::class, 'team_members', 'team_id', 'member_id');
+	}
+
+	/**
+	 * Generate slug.
+	 * 
+	 * @return SlugOptions
+	 */
+	public function getSlugOptions(): SlugOptions
+	{
+		return SlugOptions::create()
+			->generateSlugsFrom('name')
+			->saveSlugsTo('slug');
 	}
 }

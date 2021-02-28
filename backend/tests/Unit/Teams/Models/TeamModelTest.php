@@ -3,6 +3,7 @@
 use App\Domain\Auth\Models\User;
 use App\Domain\Team\Models\Team;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class TeamModelTest extends TestCase
@@ -43,5 +44,14 @@ class TeamModelTest extends TestCase
       ->assertDatabaseCount('teams', 0)
       ->assertDatabaseCount('users', 1)
       ->assertDatabaseCount('team_members', 0);
+  }
+
+  /** @test */
+  public function it_genereates_slug()
+  {
+    $team = Team::factory()->create();
+
+    $this->assertNotEmpty($team->slug);
+    $this->assertEquals($team->slug, Str::slug($team->name));
   }
 }
