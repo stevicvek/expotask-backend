@@ -3,10 +3,12 @@
 namespace App\Domain\Auth\Models;
 
 use Illuminate\Support\Carbon;
+use App\Domain\Team\Models\Team;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -51,5 +53,15 @@ class User extends Authenticatable
 	public function getFullnameAttribute(): string
 	{
 		return "$this->firstname $this->lastname";
+	}
+
+	/**
+	 * Return users teams.
+	 * 
+	 * @return BelongsToMany
+	 */
+	public function teams(): BelongsToMany
+	{
+		return $this->belongsToMany(Team::class, 'team_members', 'member_id', 'team_id');
 	}
 }
