@@ -23,6 +23,9 @@ class TeamMembers extends Migration
 				->constrained('users')
 				->onDelete('cascade');
 			$table
+				->string('invitation_code')
+				->unique();
+			$table
 				->boolean('accepted')
 				->default(false);
 		});
