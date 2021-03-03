@@ -2,10 +2,21 @@
 
 namespace App\Domain\Team\Actions;
 
+use App\Domain\Team\Actions\Membership\AttachAndAcceptAction;
 use App\Domain\Team\Models\Team;
 
 class CreateTeamAction
 {
+  protected AttachAndAcceptAction $action;
+
+  /**
+   * @param AttachAndAcceptAction $action
+   */
+  public function __construct(AttachAndAcceptAction $action)
+  {
+    $this->action = $action;
+  }
+
   /**
    * Execute action.
    * 
@@ -15,7 +26,9 @@ class CreateTeamAction
   public function execute(array $data = []): Team
   {
     $team = Team::create($data);
-    $team->members()->attach(auth()->user(), ['accepted' => 1]);
+
+    $this->action->execute($team, auth()->user());
+
     return $team;
   }
 }
