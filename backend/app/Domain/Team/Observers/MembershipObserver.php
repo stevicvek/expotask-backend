@@ -2,18 +2,18 @@
 
 namespace App\Domain\Team\Observers;
 
-use App\Domain\Team\Models\TeamMembers;
+use App\Domain\Team\Models\Membership;
 use Illuminate\Support\Str;
 
-class TeamMembersObserver
+class MembershipObserver
 {
 	/**
 	 * Handle invatation code generating.
 	 *
-	 * @param TeamMembers $model
+	 * @param Membership $model
 	 * @return void
 	 */
-	public function creating(TeamMembers $model): void
+	public function creating(Membership $model): void
 	{
 		$model->invitation_code = Str::random(32);
 	}

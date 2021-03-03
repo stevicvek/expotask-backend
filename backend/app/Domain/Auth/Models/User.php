@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Domain\Team\Models\TeamMembers;
+use App\Domain\Team\Models\Membership;
 
 class User extends Authenticatable
 {
@@ -64,6 +64,6 @@ class User extends Authenticatable
 	{
 		return $this
 			->belongsToMany(Team::class, 'team_members', 'member_id', 'team_id')
-			->using(TeamMembers::class);
+			->using(Membership::class);
 	}
 }

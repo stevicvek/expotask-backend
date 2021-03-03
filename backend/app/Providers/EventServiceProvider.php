@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Domain\Team\Models\TeamMembers;
-use App\Domain\Team\Observers\TeamMembersObserver;
+use App\Domain\Team\Models\Membership;
+use App\Domain\Team\Observers\MembershipObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -28,6 +28,6 @@ class EventServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		TeamMembers::observe(TeamMembersObserver::class);
+		Membership::observe(MembershipObserver::class);
 	}
 }

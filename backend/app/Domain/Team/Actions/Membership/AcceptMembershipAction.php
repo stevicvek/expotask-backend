@@ -3,7 +3,7 @@
 namespace App\Domain\Team\Actions\Membership;
 
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamMembers;
+use App\Domain\Team\Models\Membership;
 use App\Domain\Team\Exceptions\MembershipAlreadyAccepted;
 
 class AcceptMembershipAction
@@ -17,11 +17,11 @@ class AcceptMembershipAction
    */
   public function execute(Team $team, string $code): bool
   {
-    if (TeamMembers::whereTeam($team->id)->whereCode($code)->accepted()->count()) {
+    if (Membership::whereTeam($team->id)->whereCode($code)->accepted()->count()) {
       throw new MembershipAlreadyAccepted;
     }
 
-    $membership = TeamMembers::whereTeam($team->id)
+    $membership = Membership::whereTeam($team->id)
       ->whereCode($code)
       ->update(['accepted' => 1]);
 

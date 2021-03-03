@@ -5,7 +5,7 @@ namespace App\Domain\Team\Actions\Membership;
 use App\Domain\Auth\Models\User;
 use App\Domain\Team\Models\Team;
 use Illuminate\Support\Facades\Mail;
-use App\Domain\Team\Models\TeamMembers;
+use App\Domain\Team\Models\Membership;
 use App\Domain\Team\Mail\InvitationMail;
 use App\Domain\Team\Exceptions\MembershipAlreadyExists;
 
@@ -27,7 +27,7 @@ class AttachMembershipAction
 
     $team->members()->attach($user, ['accepted' => 0]);
 
-    $invitationCode = TeamMembers::whereTeam($team->id)
+    $invitationCode = Membership::whereTeam($team->id)
       ->notAccepted()
       ->first()
       ->invitation_code;

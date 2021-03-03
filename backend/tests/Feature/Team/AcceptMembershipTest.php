@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Http\Response;
 use App\Domain\Auth\Models\User;
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamMembers;
+use App\Domain\Team\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Domain\Team\Exceptions\MembershipAlreadyAccepted;
 
@@ -23,7 +23,7 @@ class AcceptMembershipTest extends TestCase
     $team = Team::factory()->create();
     $team->members()->attach($user);
 
-    $invCode = TeamMembers::whereTeam($team->id)->notAccepted()->first()->invitation_code;
+    $invCode = Membership::whereTeam($team->id)->notAccepted()->first()->invitation_code;
 
     $res = $this->getJson(route('team.accept', [
       'team' => $team->id,
@@ -42,7 +42,7 @@ class AcceptMembershipTest extends TestCase
     $team = Team::factory()->create();
     $team->members()->attach($user, ['accepted' => 1]);
 
-    $invCode = TeamMembers::whereTeam($team->id)
+    $invCode = Membership::whereTeam($team->id)
       ->whereMember(auth()->user()->id)
       ->first()
       ->invitation_code;
