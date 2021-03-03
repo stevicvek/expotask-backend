@@ -1,19 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Domain\Team\Models\TeamMembers;
 use App\Domain\Auth\Controllers\SignInController;
 use App\Domain\Auth\Controllers\SignUpController;
 use App\Domain\Team\Controllers\CreateTeamController;
 use App\Domain\Auth\Controllers\RefreshTokenController;
-use App\Domain\Team\Controllers\ApproveMembershipController;
+use App\Domain\Team\Controllers\AcceptMembershipController;
 
-Route::get('/', function () {
-	/* return response()
-		->json('Welcome to Expotask API!', 200); */
-
-	return TeamMembers::notApproved()->get();
-});
 
 Route::prefix('auth')->group(function () {
 	Route::post('/register', SignUpController::class)->name('register');
@@ -26,5 +19,5 @@ Route::prefix('team')
 	->middleware('auth:api')
 	->group(function () {
 		Route::post('/', CreateTeamController::class)->name('create');
-		Route::get('/approve', ApproveMembershipController::class)->name('approve');
+		Route::get('/accept', AcceptMembershipController::class)->name('accept');
 	});

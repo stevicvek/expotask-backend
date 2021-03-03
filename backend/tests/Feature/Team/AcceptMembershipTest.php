@@ -5,25 +5,27 @@ namespace Tests\Feature\Team;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 use App\Domain\Auth\Models\User;
-use App\Domain\Team\Exceptions\MembershipAlreadyAccepted;
 use App\Domain\Team\Models\Team;
 use App\Domain\Team\Models\TeamMembers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Domain\Team\Exceptions\MembershipAlreadyAccepted;
 
-class ApproveMembershipTest extends TestCase
+class AcceptMembershipTest extends TestCase
 {
   use RefreshDatabase;
 
   /** @test */
   public function it_can_accept_invitation()
   {
+    $this->withoutExceptionHandling();
+
     $this->actingAs($user = User::factory()->create(), 'api');
     $team = Team::factory()->create();
     $team->members()->attach($user);
 
     $invCode = TeamMembers::whereTeam($team->id)->notAccepted()->first()->invitation_code;
 
-    $res = $this->getJson(route('team.approve', [
+    $res = $this->getJson(route('team.accept', [
       'team' => $team->id,
       'code' => $invCode
     ]));
@@ -45,7 +47,7 @@ class ApproveMembershipTest extends TestCase
       ->first()
       ->invitation_code;
 
-    $res = $this->getJson(route('team.approve', [
+    $res = $this->getJson(route('team.accept', [
       'team' => $team->id,
       'code' => $invCode
     ]));
