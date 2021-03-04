@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Auth\Controllers\GetUserController;
 use Illuminate\Support\Facades\Route;
 use App\Domain\Auth\Controllers\SignInController;
 use App\Domain\Auth\Controllers\SignUpController;
@@ -13,6 +14,13 @@ Route::prefix('auth')->group(function () {
 	Route::post('/login', SignInController::class)->name('login');
 	Route::get('/refresh', RefreshTokenController::class)->name('refresh');
 });
+
+Route::prefix('auth')
+	->as('auth.')
+	->middleware('auth:api')
+	->group(function () {
+		Route::get('/me', GetUserController::class)->name('me');
+	});
 
 Route::prefix('team')
 	->as('team.')

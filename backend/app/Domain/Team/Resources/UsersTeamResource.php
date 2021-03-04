@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Domain\Auth\Resources;
+namespace App\Domain\Team\Resources;
 
-use App\Domain\Team\Resources\UsersTeamResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class UsersTeamResource extends JsonResource
 {
   /**
    * Transform the resource into an array.
@@ -17,9 +16,9 @@ class UserResource extends JsonResource
   {
     return [
       'id' => $this->id,
-      'fullname' => $this->fullname,
-      'email' => $this->email,
-      'teams' => UsersTeamResource::collection($this->whenLoaded('teams')),
+      'name' => $this->name,
+      'slug' => $this->slug,
+      'color' => $this->color,
     ];
   }
 }
