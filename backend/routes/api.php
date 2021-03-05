@@ -7,7 +7,7 @@ use App\Domain\Auth\Controllers\SignUpController;
 use App\Domain\Team\Controllers\CreateTeamController;
 use App\Domain\Auth\Controllers\RefreshTokenController;
 use App\Domain\Team\Controllers\AcceptMembershipController;
-
+use App\Domain\Team\Controllers\GetTeamBySlugController;
 
 Route::prefix('auth')->group(function () {
 	Route::post('/register', SignUpController::class)->name('register');
@@ -27,5 +27,6 @@ Route::prefix('team')
 	->middleware('auth:api')
 	->group(function () {
 		Route::post('/', CreateTeamController::class)->name('create');
+		Route::get('/{team:slug}', GetTeamBySlugController::class)->name('getBySlug');
 		Route::get('/accept', AcceptMembershipController::class)->name('accept');
 	});
