@@ -27,6 +27,6 @@ Route::prefix('team')
 	->middleware('auth:api')
 	->group(function () {
 		Route::post('/', CreateTeamController::class)->name('create');
-		Route::get('/{team:slug}', GetTeamBySlugController::class)->name('getBySlug');
+		Route::get('/get/{team:slug}', GetTeamBySlugController::class)->name('getBySlug');
 		Route::get('/accept', AcceptMembershipController::class)->name('accept');
 	});
