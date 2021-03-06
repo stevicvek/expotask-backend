@@ -25,7 +25,7 @@ class GetTeamBySlugTest extends TestCase
       ->assertJson([
         'success' => true,
         'code' => Response::HTTP_OK,
-        'message' => 'Team loaded.'
+        'message' => 'Successfully loaded team.'
       ]);
   }
 

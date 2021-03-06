@@ -27,7 +27,7 @@ class AcceptMembershipTest extends TestCase
       ->first()
       ->invitation_code;
 
-    $res = $this->getJson(route('team.accept', [
+    $res = $this->getJson(route('membership.accept', [
       'team' => $team->id,
       'code' => $invCode
     ]));
@@ -54,7 +54,7 @@ class AcceptMembershipTest extends TestCase
       ->first()
       ->invitation_code;
 
-    $res = $this->getJson(route('team.accept', [
+    $res = $this->getJson(route('membership.accept', [
       'team' => $team->id,
       'code' => $invCode
     ]));
