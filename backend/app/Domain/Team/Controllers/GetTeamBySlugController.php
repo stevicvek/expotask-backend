@@ -3,12 +3,12 @@
 namespace App\Domain\Team\Controllers;
 
 use App\Domain\Team\Exceptions\TeamAccessDenied;
-use Illuminate\Http\Response;
-use App\Domain\Team\Models\Team;
 use App\Domain\Team\Resources\TeamResource;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use App\Domain\Team\Models\Team;
 
-class GetTeamBySlugController
+class GetTeamBySlugController extends Controller
 {
   /**
    * Get team by slug
@@ -22,7 +22,6 @@ class GetTeamBySlugController
       throw new TeamAccessDenied;
     }
 
-    return response()
-      ->json(new TeamResource($team), Response::HTTP_OK);
+    return $this->sendSuccessResponse(new TeamResource($team), 'Successfully loaded team.');
   }
 }

@@ -21,7 +21,12 @@ class GetTeamBySlugTest extends TestCase
     $response = $this->getJson(route('team.getBySlug', ['team' => $team->slug]));
 
     $response
-      ->assertOk();
+      ->assertOk()
+      ->assertJson([
+        'success' => true,
+        'code' => Response::HTTP_OK,
+        'message' => 'Team loaded.'
+      ]);
   }
 
   /** @test */

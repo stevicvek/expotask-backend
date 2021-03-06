@@ -17,13 +17,15 @@ class AcceptMembershipTest extends TestCase
   /** @test */
   public function it_can_accept_invitation()
   {
-    $this->withoutExceptionHandling();
-
     $this->actingAs($user = User::factory()->create(), 'api');
     $team = Team::factory()->create();
     $team->members()->attach($user);
 
-    $invCode = Membership::whereTeam($team->id)->notAccepted()->first()->invitation_code;
+    $invCode = Membership::whereTeam($team->id)
+      ->whereMember($user->id)
+      ->notAccepted()
+      ->first()
+      ->invitation_code;
 
     $res = $this->getJson(route('team.accept', [
       'team' => $team->id,
@@ -32,7 +34,12 @@ class AcceptMembershipTest extends TestCase
 
     $res
       ->assertStatus(Response::HTTP_ACCEPTED)
-      ->assertExactJson(['Accepted!']);
+      ->assertExactJson([
+        'success' => true,
+        'code' => Response::HTTP_ACCEPTED,
+        'message' => 'Membership is accepted!',
+        'data' => null,
+      ]);
   }
 
   /** @test */

@@ -24,14 +24,19 @@ class CreateTeamTest extends TestCase
 
     $response
       ->assertStatus(Response::HTTP_CREATED)
-      ->assertJsonStructure(['id', 'name', 'color']);
+      ->assertJsonStructure(['success', 'code', 'message', 'data'])
+      ->assertJson([
+        'success' => true,
+        'code' => Response::HTTP_CREATED,
+        'message' => 'Succesfully created team.',
+      ]);
 
     $this
       ->assertDatabaseCount('teams', 1)
       ->assertDatabaseCount('team_members', 1)
       ->assertDatabaseMissing('team_members', [
         [
-          'team_id' => json_decode($response->getContent())->id,
+          'team_id' => json_decode($response->getContent())->data->id,
           'member_id' => $user->id,
           'accepted' => 1
         ]

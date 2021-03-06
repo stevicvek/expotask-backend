@@ -2,12 +2,13 @@
 
 namespace App\Domain\Team\Controllers;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Domain\Team\Actions\CreateTeamAction;
 use App\Domain\Team\Requests\StoreTeamRequest;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
-class CreateTeamController
+class CreateTeamController extends Controller
 {
   /**
    * Create team.
@@ -22,7 +23,6 @@ class CreateTeamController
 
     $team = $action->execute($data);
 
-    return response()
-      ->json($team, Response::HTTP_CREATED);
+    return $this->sendSuccessResponse($team, 'Succesfully created team.', Response::HTTP_CREATED);
   }
 }
