@@ -1,13 +1,13 @@
 <?php
 
-use App\Domain\Auth\Controllers\GetUserController;
 use Illuminate\Support\Facades\Route;
 use App\Domain\Auth\Controllers\SignInController;
 use App\Domain\Auth\Controllers\SignUpController;
+use App\Domain\Auth\Controllers\GetUserController;
 use App\Domain\Team\Controllers\CreateTeamController;
 use App\Domain\Auth\Controllers\RefreshTokenController;
-use App\Domain\Team\Controllers\AcceptMembershipController;
 use App\Domain\Team\Controllers\GetTeamBySlugController;
+use App\Domain\Team\Controllers\AcceptMembershipController;
 
 Route::prefix('auth')->group(function () {
 	Route::post('/register', SignUpController::class)->name('register');
