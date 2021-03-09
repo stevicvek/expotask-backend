@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Domain\Auth\Controllers\SignInController;
 use App\Domain\Auth\Controllers\SignUpController;
 use App\Domain\Auth\Controllers\GetUserController;
+use App\Domain\Role\Controllers\GiveRoleController;
 use App\Domain\Team\Controllers\CreateTeamController;
 use App\Domain\Auth\Controllers\RefreshTokenController;
 use App\Domain\Team\Controllers\GetTeamBySlugController;
@@ -35,4 +36,13 @@ Route::prefix('membership')
 	->middleware('auth:api')
 	->group(function () {
 		Route::get('/accept', AcceptMembershipController::class)->name('accept');
+	});
+
+Route::prefix('role')
+	->as('role.')
+	->middleware('auth:api')
+	->group(function () {
+		Route::post('/give/{team:id}', GiveRoleController::class)
+			->middleware('role:admin')
+			->name('give');
 	});

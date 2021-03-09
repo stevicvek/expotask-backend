@@ -2,6 +2,7 @@
 
 namespace App\Domain\Team\Models;
 
+use App\Domain\Role\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -54,5 +55,13 @@ class Membership extends Pivot
   public function scopeNotAccepted($query): Builder
   {
     return $query->where('accepted', 0);
+  }
+
+  /**
+   * Role
+   */
+  public function role()
+  {
+    return $this->hasOne(Role::class, 'id', 'role_id');
   }
 }

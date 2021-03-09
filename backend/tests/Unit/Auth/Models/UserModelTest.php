@@ -54,6 +54,22 @@ class UserModelTest extends TestCase
   }
 
   /** @test */
+  public function it_can_give_role_to_user()
+  {
+    $this->actingAs($user = User::factory()->create());
+    $team = Team::factory()->create();
+    $user->teams()->attach($team);
+
+    $user->giveRole($team->id, 'admin');
+
+    $this->assertDatabaseHas('team_members', [
+      'member_id' => $user->id,
+      'team_id' => $team->id,
+      'role_id' => 1,
+    ]);
+  }
+
+  /** @test */
   public function it_returns_if_user_has_role()
   {
     $this->actingAs($user = User::factory()->create());

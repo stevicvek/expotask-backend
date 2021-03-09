@@ -2,6 +2,7 @@
 
 namespace App\Domain\Role\Middleware;
 
+use App\Domain\Role\Exceptions\PermissionDenied;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class Role
 	public function handle(Request $request, Closure $next)
 	{
 		$roles = array_slice(func_get_args(), 2);
-		$teamId = (int) $request->route('team');
+		$teamId = (int) $request->route('team')['id'];
 
 		foreach ($roles as $role) {
 			if (auth()->user()->hasRole($teamId, $role)) {
@@ -25,6 +26,6 @@ class Role
 			}
 		}
 
-		return abort(401, 'Permission denied!');
+		throw new PermissionDenied;
 	}
 }
