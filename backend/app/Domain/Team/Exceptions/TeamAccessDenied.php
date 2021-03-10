@@ -3,10 +3,13 @@
 namespace App\Domain\Team\Exceptions;
 
 use Exception;
+use App\Traits\Responser;
 use Illuminate\Http\Response;
 
 class TeamAccessDenied extends Exception
 {
+  use Responser;
+
   /**
    * Report the exception.
    *
@@ -25,7 +28,6 @@ class TeamAccessDenied extends Exception
    */
   public function render($request)
   {
-    return response()
-      ->json(['error' => 'Access denied!'], Response::HTTP_NOT_ACCEPTABLE);
+    return $this->sendErrorResponse(null, 'You can\'t access this team!', Response::HTTP_FORBIDDEN);
   }
 }

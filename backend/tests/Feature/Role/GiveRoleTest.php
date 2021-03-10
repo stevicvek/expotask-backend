@@ -7,6 +7,7 @@ use App\Domain\Auth\Models\User;
 use App\Domain\Role\Exceptions\PermissionDenied;
 use App\Domain\Team\Models\Team;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 
 class GiveRoleTest extends TestCase
 {
@@ -44,5 +45,14 @@ class GiveRoleTest extends TestCase
     ]);
 
     $this->assertInstanceOf(PermissionDenied::class, $response->exception);
+
+    $response
+      ->assertStatus(Response::HTTP_FORBIDDEN)
+      ->assertJson([
+        'success' => false,
+        'code' => Response::HTTP_FORBIDDEN,
+        'message' => 'You don\'t have permission to do this!',
+        'data' => null
+      ]);
   }
 }

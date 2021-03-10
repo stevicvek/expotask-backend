@@ -2,11 +2,14 @@
 
 namespace App\Domain\Role\Exceptions;
 
+use App\Traits\Responser;
 use Exception;
 use Illuminate\Http\Response;
 
 class PermissionDenied extends Exception
 {
+  use Responser;
+
   /**
    * Report the exception.
    *
@@ -25,7 +28,6 @@ class PermissionDenied extends Exception
    */
   public function render($request)
   {
-    return response()
-      ->json(['error' => 'You don\'t have permission to do this!'], Response::HTTP_NOT_ACCEPTABLE);
+    return $this->sendErrorResponse(null, 'You don\'t have permission to do this!', Response::HTTP_FORBIDDEN);
   }
 }

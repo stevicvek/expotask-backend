@@ -38,6 +38,13 @@ class GetTeamBySlugTest extends TestCase
     $response = $this->getJson(route('team.getBySlug', ['team' => $team->slug]));
 
     $this->assertInstanceOf(TeamAccessDenied::class, $response->exception);
-    $response->assertStatus(Response::HTTP_NOT_ACCEPTABLE);
+    $response
+      ->assertStatus(Response::HTTP_FORBIDDEN)
+      ->assertJson([
+        'success' => false,
+        'code' => Response::HTTP_FORBIDDEN,
+        'message' => 'You can\'t access this team!',
+        'data' => null
+      ]);
   }
 }

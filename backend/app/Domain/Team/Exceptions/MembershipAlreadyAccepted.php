@@ -3,10 +3,13 @@
 namespace App\Domain\Team\Exceptions;
 
 use Exception;
+use App\Traits\Responser;
 use Illuminate\Http\Response;
 
 class MembershipAlreadyAccepted extends Exception
 {
+  use Responser;
+
   /**
    * Report the exception.
    *
@@ -25,7 +28,6 @@ class MembershipAlreadyAccepted extends Exception
    */
   public function render($request)
   {
-    return response()
-      ->json(['error' => 'Membership is already accepted!'], Response::HTTP_NOT_ACCEPTABLE);
+    return $this->sendErrorResponse(null, 'Membership is already accepted!', Response::HTTP_FORBIDDEN);
   }
 }

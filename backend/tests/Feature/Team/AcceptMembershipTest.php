@@ -54,11 +54,19 @@ class AcceptMembershipTest extends TestCase
       ->first()
       ->invitation_code;
 
-    $res = $this->getJson(route('membership.accept', [
+    $response = $this->getJson(route('membership.accept', [
       'team' => $team->id,
       'code' => $invCode
     ]));
 
-    $this->assertInstanceOf(MembershipAlreadyAccepted::class, $res->exception);
+    $this->assertInstanceOf(MembershipAlreadyAccepted::class, $response->exception);
+    $response
+      ->assertStatus(Response::HTTP_FORBIDDEN)
+      ->assertJson([
+        'success' => false,
+        'code' => Response::HTTP_FORBIDDEN,
+        'message' => 'Membership is already accepted!',
+        'data' => null
+      ]);
   }
 }
